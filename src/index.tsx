@@ -15,7 +15,7 @@ const getReactAppData = (element: Element): {} => {
   return JSON.parse(element.getAttribute('data-custom') ?? '');
 };
 
-const renderAppComponent = (element: Element) => {
+const renderAppComponent = (element: Element): void => {
   const appName = String(element.getAttribute('data-app'));
   const appData = getReactAppData(element);
   ReactDOM.render(<App appName={appName} appData={appData} />, element);
