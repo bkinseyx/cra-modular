@@ -1,12 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+
 import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare const window: any;
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+window.invokeReact = (): void => {
+  document.querySelectorAll('.react-app').forEach((element, i) => {
+    setTimeout(() => {
+      const appName = String(element.getAttribute('data-app'));
+      const appData = JSON.parse(String(element.getAttribute('data-custom')));
+      ReactDOM.render(<App appName={appName} appData={appData} />, element);
+    }, i * 2000);
+  });
+};

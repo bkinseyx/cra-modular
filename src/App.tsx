@@ -1,27 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-import Greeter from './Greeter';
+interface AppProps {
+  appName: string;
+  appData: {};
+}
 
-const App: React.FC = () => (
-  <div className="App">
-    <header className="App-header">
-      <Greeter name="Ben"></Greeter>
-      <img src={logo} className="App-logo" alt="logo" />
-      <p>
-        Edit <code>src/App.tsx</code> and save to reload.
-      </p>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Learn React
-      </a>
-    </header>
-  </div>
-);
+export interface AppComponentProps {
+  appData: {};
+}
 
+const capitalize = (s: string): string => {
+  if (typeof s !== 'string') return '';
+  return s.charAt(0).toUpperCase() + s.slice(1);
+};
+
+const App: React.FC<AppProps> = ({ appName, appData }) => {
+  if (!appName) {
+    return <div>No App Name</div>;
+  }
+  const AppComponent = React.lazy(() =>
+    import(`./apps/${appName}/${capitalize(appName)}.tsx`),
+  );
+  return (
+    <div>
+      this is app name: {appName}
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <AppComponent appData={appData} />
+      </React.Suspense>
+    </div>
+  );
+};
 export default App;
