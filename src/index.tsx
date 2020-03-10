@@ -20,7 +20,7 @@ const renderAppComponent = (element: Element): void => {
   const appData = getReactAppData(element);
   ReactDOM.render(<App appName={appName} appData={appData} />, element);
 };
-window.invokeReact = (reactId: string | undefined): void => {
+window.invokeReact = (reactId?: string): void => {
   if (reactId) {
     const element = document.getElementById(reactId);
     if (element) {
