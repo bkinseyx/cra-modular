@@ -15,10 +15,24 @@ const getReactAppData = (element: Element): {} => {
   return JSON.parse(element.getAttribute('data-custom') ?? '');
 };
 
-window.invokeReact = (): void => {
-  document.querySelectorAll('.react-app').forEach(element => {
-    const appName = String(element.getAttribute('data-app'));
-    const appData = getReactAppData(element);
-    ReactDOM.render(<App appName={appName} appData={appData} />, element);
-  });
+const renderAppComponent = (element: Element) => {
+  const appName = String(element.getAttribute('data-app'));
+  const appData = getReactAppData(element);
+  ReactDOM.render(<App appName={appName} appData={appData} />, element);
 };
+window.invokeReact = (reactId: string | undefined): void => {
+  if (reactId) {
+    const element = document.getElementById(reactId);
+    if (element) {
+      renderAppComponent(element);
+    }
+  } else {
+    document.querySelectorAll('.react-app').forEach(element => {
+      renderAppComponent(element);
+    });
+  }
+};
+
+if (process.env.NODE_ENV === 'development') {
+  window.invokeReact();
+}
